@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="mapper.ProductMapperTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-03-30T09:18:43" hostname="DESKTOP-7BC85GH" time="4.727">
+  <properties/>
+  <testcase name="mapProducerFieldToProductDtoTest()" classname="mapper.ProductMapperTest" time="4.727"/>
+  <system-out><![CDATA[Hibernate: 
+    select
+        product0_.id as id1_1_0_,
+        product0_.cost as cost2_1_0_,
+        product0_.count as count3_1_0_,
+        product0_.name as name4_1_0_,
+        product0_.price as price5_1_0_,
+        product0_.producer_id as producer7_1_0_,
+        product0_.shelf_life as shelf_li6_1_0_,
+        producer1_.id as id1_0_1_,
+        producer1_.contact as contact2_0_1_,
+        producer1_.name as name3_0_1_ 
+    from
+        Product product0_ 
+    left outer join
+        Producer producer1_ 
+            on product0_.producer_id=producer1_.id 
+    where
+        product0_.id=?
+Hibernate: 
+    select
+        products0_.producer_id as producer7_1_0_,
+        products0_.id as id1_1_0_,
+        products0_.id as id1_1_1_,
+        products0_.cost as cost2_1_1_,
+        products0_.count as count3_1_1_,
+        products0_.name as name4_1_1_,
+        products0_.price as price5_1_1_,
+        products0_.producer_id as producer7_1_1_,
+        products0_.shelf_life as shelf_li6_1_1_ 
+    from
+        Product products0_ 
+    where
+        products0_.producer_id=?
+ProductDto[id=2, name=РІР°РґРёС‡СЊРєР°, cost=null, shelfLife=null, count=null, price=0, producer=ProducerDto[id=1, name=Google, contact=1337, productList=[Product(id=2, name=РІР°РґРёС‡СЊРєР°, cost=null, shelfLife=null, count=null, price=null), Product(id=5, name=watter, cost=0, shelfLife=2000-02-02, count=0, price=0)]]]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
