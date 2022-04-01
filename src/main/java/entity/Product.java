@@ -11,6 +11,14 @@ import java.time.LocalDate;
 @Builder
 @Entity
 public class Product {
+    public Product(String name, int cost, LocalDate shelfLife, int count) {
+        this.name = name;
+        this.cost = cost;
+        this.shelfLife = shelfLife;
+        this.count = count;
+        this.price = cost * count;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

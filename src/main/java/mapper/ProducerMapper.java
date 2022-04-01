@@ -10,22 +10,39 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProducerMapper implements Mapper<Producer, ProducerDto> {
 
-
     @Override
-    public ProducerDto mapFrom(Producer object) {
+    public ProducerDto fullMap(Producer object) {
         return new ProducerDto(
                 object.getId(),
                 object.getName(),
                 object.getContact(),
-                object.getProducts()
+                ProductMapper.dontFullMap(object.getProducts())
         );
     }
 
     @Override
-    public List<ProducerDto> mapFrom(List<Producer> collection) {
+    public List<ProducerDto> fullMap(List<Producer> collection) {
         List<ProducerDto> producersDto = new ArrayList<>(collection.size());
         for (Producer producer : collection) {
-            producersDto.add(mapFrom(producer));
+            producersDto.add(fullMap(producer));
+        }
+
+        return producersDto;
+    }
+
+    public ProducerDto dontFullMap(Producer object) {
+        return new ProducerDto(
+                object.getId(),
+                object.getName(),
+                object.getContact(),
+                null
+        );
+    }
+
+    public List<ProducerDto> dontFullMap(List<Producer> collection) {
+        List<ProducerDto> producersDto = new ArrayList<>(collection.size());
+        for (Producer producer : collection) {
+            producersDto.add(dontFullMap(producer));
         }
 
         return producersDto;

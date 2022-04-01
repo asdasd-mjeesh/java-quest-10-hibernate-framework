@@ -4,49 +4,114 @@ import dto.ProducerDto;
 import dto.ProductDto;
 import entity.Producer;
 import entity.Product;
-import lombok.RequiredArgsConstructor;
 import mapper.ProducerMapper;
 import mapper.ProductMapper;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import repository.ProducerRepository;
 import repository.ProductRepository;
 
+import java.lang.reflect.Proxy;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 public class Store {
+    private final Session currentSession;
+
     private static final ProducerMapper producerMapper = new ProducerMapper();
     private static final ProductMapper productMapper = new ProductMapper();
     private final ProducerRepository producerRepository;
     private final ProductRepository productRepository;
 
-    public ProducerDto saveProducer(Producer producer) {
-        return producerMapper.mapFrom(producerRepository.save(producer));
+    public Store(SessionFactory sessionFactory) {
+        currentSession = (Session) Proxy.newProxyInstance(SessionFactory.class.getClassLoader(), new Class[]{Session.class},
+                ((proxy, method, args) -> method.invoke(sessionFactory.getCurrentSession(), args)));
+        producerRepository = new ProducerRepository(currentSession);
+        productRepository = new ProductRepository(currentSession);
     }
 
-    public ProductDto saveProduct(Product product) {
-        return productMapper.mapFrom(productRepository.save(product));
+    public ProducerDto saveProducer(String name, int contact) {
+        try {
+            currentSession.beginTransaction();
+            Producer producer = Producer.builder()
+                    .name(name)
+                    .contact(contact)
+                    .build();
+            Producer savedProducer = producerRepository.save(producer);
+
+            return producerMapper.fullMap(savedProducer);
+        } finally {
+            currentSession.getTransaction().commit();
+        }
+    }
+
+    public ProductDto saveProduct(String name, int cost, LocalDate shelfLife, int count, Long producerId) {
+        try {
+            currentSession.beginTransaction();
+            
+            Product product = new Product(name, cost, shelfLife, count);
+            Producer producer = producerRepository.findById(producerId).get();
+            producer.addProduct(product);
+
+            return productMapper.fullMap(product);
+        } finally {
+            currentSession.getTransaction().commit();
+        }
     }
 
     public boolean deleteProduct(Long id) {
-        var maybeProduct = productRepository.findById(id);
-        maybeProduct.ifPresent(product -> productRepository.delete(id));
-        return maybeProduct.isPresent();
+        try {
+            currentSession.beginTransaction();
+            var maybeProduct = productRepository.findById(id);
+            maybeProduct.ifPresent(product -> productRepository.delete(maybeProduct.get()));
+            return maybeProduct.isPresent();
+        } finally {
+            currentSession.getTransaction().commit();
+        }
+    }
+
+    public boolean deleteProducer(Long id) {
+        try {
+            currentSession.beginTransaction();
+            var maybeProducer = producerRepository.findById(id);
+            maybeProducer.ifPresent(product -> producerRepository.delete(maybeProducer.get()));
+            return maybeProducer.isPresent();
+        } finally {
+            currentSession.getTransaction().commit();
+        }
     }
 
     public List<ProductDto> getProducts() {
-        return productMapper.mapFrom(productRepository.findAll());
+        try {
+            currentSession.beginTransaction();
+            List<Product> products = productRepository.findAll();
+            return productMapper.fullMap(products);
+        } finally {
+            currentSession.getTransaction().commit();
+        }
     }
 
-    public List<Producer> getProducers() {
-        return producerRepository.findAll();
+    public List<ProducerDto> getProducers() {
+        try {
+            currentSession.beginTransaction();
+            List<Producer> producers = producerRepository.findAll();
+            return producerMapper.fullMap(producers);
+        } finally {
+            currentSession.getTransaction().commit();
+        }
     }
 
     // supported method for a and b
     public List<ProductDto> getAllProductsWithName(String name) {
-        return productMapper.mapFrom(productRepository.findAll(name));
+        try {
+            currentSession.beginTransaction();
+            List<Product> products = productRepository.findAll(name);
+            return productMapper.fullMap(products);
+        } finally {
+            currentSession.getTransaction().commit();
+        }
     }
 
     // a

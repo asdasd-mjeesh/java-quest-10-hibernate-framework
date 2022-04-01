@@ -13,7 +13,7 @@ public class ProductMapper implements Mapper<Product, ProductDto> {
     private final ProducerMapper producerReadMapper = new ProducerMapper();
 
     @Override
-    public ProductDto mapFrom(Product object) {
+    public ProductDto fullMap(Product object) {
         int price = 0;
         if (object.getCost() != null && object.getCount() != null) {
             price = object.getCost() * object.getCount();
@@ -27,16 +27,46 @@ public class ProductMapper implements Mapper<Product, ProductDto> {
                 object.getCount(),
                 price,
                 Optional.ofNullable(object.getProducer())
-                        .map(producerReadMapper::mapFrom)
+                        .map(producerReadMapper::dontFullMap)
                         .orElse(null)
         );
     }
 
     @Override
-    public List<ProductDto> mapFrom(List<Product> collection) {
+    public List<ProductDto> fullMap(List<Product> collection) {
         List<ProductDto> productsDto = new ArrayList<>(collection.size());
         for (Product product : collection) {
-            productsDto.add(mapFrom(product));
+            productsDto.add(fullMap(product));
+        }
+
+        return productsDto;
+    }
+
+    public static ProductDto dontFullMap(Product object) {
+        int price = 0;
+        if (object.getCost() != null && object.getCount() != null) {
+            price = object.getCost() * object.getCount();
+        }
+
+        return new ProductDto(
+                object.getId(),
+                object.getName(),
+                object.getCost(),
+                object.getShelfLife(),
+                object.getCount(),
+                price,
+                null
+        );
+    }
+
+    public static List<ProductDto> dontFullMap(List<Product> collection) {
+        if (collection.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<ProductDto> productsDto = new ArrayList<>(collection.size());
+        for (Product product : collection) {
+            productsDto.add(dontFullMap(product));
         }
 
         return productsDto;

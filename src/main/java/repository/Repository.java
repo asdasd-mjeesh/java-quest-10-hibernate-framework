@@ -9,5 +9,5 @@ public interface Repository<E, K> {
     List<E> findAll();             //  R #2
     List<E> findAll(String name);  //  R #3
     void update(E entity);         //  U
-    void delete(K id);             //  D
+    void delete(E entity);             //  D
 }

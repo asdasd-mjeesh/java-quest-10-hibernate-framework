@@ -3,6 +3,7 @@ package entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,7 +20,13 @@ public class Producer {
 
     private Integer contact;
 
+    @Builder.Default
     @ToString.Exclude
-    @OneToMany(mappedBy = "producer")
-    private List<Product> products;
+    @OneToMany(mappedBy = "producer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Product> products = new ArrayList<>();
+
+    public void addProduct(Product product) {
+        product.setProducer(this);
+        products.add(product);
+    }
 }

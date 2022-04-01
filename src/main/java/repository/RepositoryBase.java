@@ -1,15 +1,19 @@
 package repository;
 
-import lombok.RequiredArgsConstructor;
-
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 public abstract class RepositoryBase<E, K> implements Repository<E, K> {
     private final Class<E> clazz;
     private final EntityManager entityManager;
+
+    public RepositoryBase(Class<E> clazz, EntityManager entityManager) {
+        this.clazz = clazz;
+        this.entityManager = entityManager;
+    }
 
     @Override
     public E save(E entity) {
@@ -37,8 +41,8 @@ public abstract class RepositoryBase<E, K> implements Repository<E, K> {
     }
 
     @Override
-    public void delete(K id) {
-        entityManager.remove(id);
+    public void delete(E entity) {
+        entityManager.remove(entity);
         entityManager.flush();
     }
 

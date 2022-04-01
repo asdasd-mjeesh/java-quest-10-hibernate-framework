@@ -21,7 +21,7 @@ class ProducerMapperTest {
         ProducerRepository repository = new ProducerRepository(session);
         ProducerMapper mapper = new ProducerMapper();
         var producer = repository.findById(1L);
-        ProducerDto producerDTO = mapper.mapFrom(producer.get());
+        ProducerDto producerDTO = mapper.fullMap(producer.get());
 
         System.out.println(producerDTO);
 
