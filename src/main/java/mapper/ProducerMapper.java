@@ -44,7 +44,6 @@ public class ProducerMapper implements Mapper<Producer, ProducerDto> {
         for (Producer producer : collection) {
             producersDto.add(dontFullMap(producer));
         }
-
         return producersDto;
     }
 }

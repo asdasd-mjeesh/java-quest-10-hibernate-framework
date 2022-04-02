@@ -9,12 +9,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Runner {
-    private final Store store;
     private final ShowManager showManager;
     private final ExecuteManager executeManager;
 
     public Runner() {
-        store = new Store(HibernateUtil.buildSessionFactory());
+        Store store = new Store(HibernateUtil.buildSessionFactory());
         showManager = new ShowManager(store);
         executeManager = new ExecuteManager(store);
     }
@@ -57,7 +56,7 @@ public class Runner {
                     case "d", "D" -> showManager.showAllProductsSortedByPrice();
                     case "e", "E" -> showManager.showAllProducers();
                     case "f", "F" -> showManager.showAllProducersWithThemProducts();
-                    case "1" -> showManager.showAll();
+                    case "1" -> showManager.showAllProducts();
                     case "2" -> executeManager.addProduct();
                     case "3" -> {
                         System.out.print("id:\t");

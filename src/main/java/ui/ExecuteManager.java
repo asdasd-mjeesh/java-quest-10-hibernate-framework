@@ -30,7 +30,6 @@ public class ExecuteManager implements CreatigADate {
 
             System.out.print(" Введите количество продуктов:\t");
             int count = in.nextInt();
-            in.nextLine();
 
             store.saveProduct(
                     name,
@@ -46,12 +45,12 @@ public class ExecuteManager implements CreatigADate {
     }
 
     public void addProducer() {
-        System.out.println(" Введите имя производителя:\t");
-        in.nextLine();
+        System.out.print(" Введите имя производителя:\t");
         String name = in.nextLine();
 
-        System.out.println(" Введите номер телефона производителя:\t");
+        System.out.print(" Введите номер телефона производителя:\t");
         int contact = in.nextInt();
+        in.nextLine();
 
         store.saveProducer(name, contact);
     }

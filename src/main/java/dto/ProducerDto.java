@@ -9,7 +9,7 @@ public record ProducerDto(Long id,
 
     @Override
     public String toString() {
-        return "id: " + id + " | " + name + " | +" + contact + "\n" ;
+        return "id: " + id + " | " + name + " | +" + contact;
     }
 
     public String productsToString() {

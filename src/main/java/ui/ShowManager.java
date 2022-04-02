@@ -14,7 +14,7 @@ public class ShowManager {
         this.store = store;
     }
 
-    public void showAll() {
+    public void showAllProducts() {
         List<ProductDto> products = store.getProducts();
         for (ProductDto product : products) {
             System.out.println("-> " + product);
@@ -24,46 +24,34 @@ public class ShowManager {
     //a
     public void showProductsWithNameAndSortedByShelfLife(String name) {
         var toShow = store.getAllSortedByShelfLifeWithName(name);
-
         System.out.println("__________\n" +
                 "Все продукты с названием \"" + name + "\", \n" +
                 "отсортированные по сроку годности:");
-
         for (ProductDto product : toShow) {
-            System.out.println("-> " + product + "--");
+            System.out.println("-> " + product);
         }
-
-        System.out.println("__________");
     }
 
     //b
     public void showProductsWithNameAndCostALess(String name, int maxCost) {
         var toShow = store.getProductsWithNameAndCostALess(name, maxCost);
-
         System.out.println("__________\n" +
                 "Все продукты с названием \"" + name + "\", \n" +
                 "не превышающие стоимость " + maxCost + ":");
-
         for (ProductDto product : toShow) {
-            System.out.println("-> " + product + "--");
+            System.out.println("-> " + product);
         }
-
-        System.out.println("__________");
     }
 
     //c
     public void showProductWithShelfLifeAlong(LocalDate minShelfLife) {
         var toShow = store.getAllWithShelfLifeALong(minShelfLife);
-
         System.out.println("__________\n" +
                 "Все продукты со сроком годности, \n" +
                 "бОльшим, чем " + minShelfLife + ":");
-
         for (ProductDto product : toShow) {
-            System.out.println("-> " + product + "--");
+            System.out.println("-> " + product);
         }
-
-        System.out.println("__________");
     }
 
     //d
@@ -73,12 +61,9 @@ public class ShowManager {
                 __________
                 Все продукты, отсортированные по параметру
                 стоимость * количество""");
-
         for (ProductDto product : toShow) {
-            System.out.println("-> " + product + "--");
+            System.out.println("-> " + product);
         }
-
-        System.out.println("__________");
     }
 
     //e
@@ -87,7 +72,7 @@ public class ShowManager {
         System.out.println("_________\n" +
                 "Все производители:");
         for (ProducerDto producer : producers) {
-            System.out.print("\n-> " + producer);
+            System.out.println("-> " + producer);
         }
     }
 
@@ -97,7 +82,7 @@ public class ShowManager {
 
         System.out.println("__________");
         for (ProducerDto producer : producers) {
-            System.out.print(producer);
+            System.out.println(producer);
             System.out.print(producer.productsToString());
         }
     }
