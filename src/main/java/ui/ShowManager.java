@@ -17,7 +17,7 @@ public class ShowManager {
     public void showAll() {
         List<ProductDto> products = store.getProducts();
         for (ProductDto product : products) {
-            System.out.println(product);
+            System.out.println("-> " + product);
         }
     }
 
@@ -87,10 +87,8 @@ public class ShowManager {
         System.out.println("_________\n" +
                 "Все производители:");
         for (ProducerDto producer : producers) {
-            System.out.println("-> " + producer.name() + " | id " + producer.id());
+            System.out.print("\n-> " + producer);
         }
-
-        System.out.println("__________");
     }
 
     //f
@@ -99,7 +97,8 @@ public class ShowManager {
 
         System.out.println("__________");
         for (ProducerDto producer : producers) {
-            System.out.println(producer);
+            System.out.print(producer);
+            System.out.print(producer.productsToString());
         }
     }
 

@@ -78,17 +78,8 @@ public class Runner {
             } catch (InputMismatchException e) {
                 System.out.println("was input invalid value");
             } catch (HibernateException e) {
-                System.out.println("input error. Was enter invalid value or item with this name is exist");
+                System.out.println("input error. Was enter invalid value or item with this name is not exist");
             }
         }
-    }
-
-    private void run1() {
-
-
-        var result = store.getProducts();
-        System.out.println(result);
-
-
     }
 }
